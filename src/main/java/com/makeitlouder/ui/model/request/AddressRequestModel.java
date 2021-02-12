@@ -1,0 +1,16 @@
+package com.makeitlouder.ui.model.request;
+
+import com.makeitlouder.shared.dto.BaseDto;
+import lombok.*;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AddressRequestModel {
+    private String streetName;
+    private String country;
+    private String city;
+    private String postalCode;
+}
