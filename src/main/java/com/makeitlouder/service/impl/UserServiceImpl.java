@@ -7,10 +7,15 @@ import com.makeitlouder.service.UserService;
 import com.makeitlouder.shared.dto.UserDto;
 import com.makeitlouder.shared.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -60,6 +65,25 @@ public class UserServiceImpl implements UserService {
         UserDto savedUser = userMapper.UserEntityToUserDto(createdUser);
 
         return savedUser;
+    }
+
+    @Override
+    public List<UserDto> getUsers(int page, int limit) {
+        List<UserDto> userDtoList = new ArrayList<>();
+
+        if (page > 0) page -= 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<User> userPage = userRepository.findAll(pageableRequest);
+        List<User> users = userPage.getContent();
+
+        for (User user : users) {
+            UserDto userDto = userMapper.UserEntityToUserDto(user);
+            userDtoList.add(userDto);
+        }
+
+        return userDtoList;
     }
 
     @Override

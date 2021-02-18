@@ -2,12 +2,11 @@ package com.makeitlouder.ui.controllers;
 
 import com.makeitlouder.domain.Pet;
 import com.makeitlouder.service.PetService;
-import com.makeitlouder.shared.dto.PetDto;
 import com.makeitlouder.ui.model.response.OperationalStatusModel;
-import com.makeitlouder.ui.model.response.PetRest;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController()
@@ -18,7 +17,7 @@ public class PetController {
 
     @GetMapping("/{id}")
     public Pet findPetById(@PathVariable Long id) {
-        Pet foundPet = petService.findPetById(id);
+        Pet foundPet = petService.getPetById(id);
         return foundPet;
     }
 
@@ -26,6 +25,14 @@ public class PetController {
     public Pet createPet(@RequestBody Pet pet) {
         Pet createdPet = petService.createPet(pet);
         return createdPet;
+    }
+
+    @GetMapping
+    public List<Pet> getPets(@RequestParam(value = "page") int page,
+                             @RequestParam(value = "limit") int limit) {
+        List<Pet> petLists = petService.getPets(page, limit);
+
+        return petLists;
     }
 
     @PutMapping("/{id}")

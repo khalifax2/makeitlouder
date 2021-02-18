@@ -30,19 +30,25 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "pet_type_id")
     private PetType petType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "pet_status_id")
     private PetStatus petStatus;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "gender")
+    private Gender gender;
 
 
     @Builder
     public Pet(Integer version, Timestamp createdDate, Timestamp lastModified, Long id,
-               String name, String imagePath, PetType petType, PetStatus petStatus) {
+               String name, String imagePath, PetType petType, PetStatus petStatus,
+               Gender gender) {
         super(version, createdDate, lastModified);
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
         this.petType = petType;
         this.petStatus = petStatus;
+        this.gender = gender;
     }
 }

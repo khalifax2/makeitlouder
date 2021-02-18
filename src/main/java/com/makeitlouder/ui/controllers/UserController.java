@@ -9,9 +9,7 @@ import com.makeitlouder.ui.model.response.UserRest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +36,21 @@ public class UserController {
         UserRest user = userMapper.UserDtoToUserRest(createdUser);
 
         return user;
+    }
+
+    @GetMapping
+    public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
+                                   @RequestParam(value = "limit", defaultValue = "2") int limit
+    ) {
+        List<UserRest> userList = new ArrayList<>();
+        List<UserDto> foundUsers = userService.getUsers(page, limit);
+
+        for (UserDto userDto : foundUsers) {
+            UserRest user = userMapper.UserDtoToUserRest(userDto);
+            userList.add(user);
+        }
+
+        return userList;
     }
 
     @PutMapping("/{id}")

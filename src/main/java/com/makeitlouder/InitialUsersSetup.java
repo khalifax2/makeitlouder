@@ -1,11 +1,11 @@
 package com.makeitlouder;
 
+import com.makeitlouder.domain.Gender;
+import com.makeitlouder.domain.PetStatus;
 import com.makeitlouder.domain.User;
 import com.makeitlouder.domain.security.Authority;
 import com.makeitlouder.domain.security.Role;
-import com.makeitlouder.repositories.RoleRepository;
-import com.makeitlouder.repositories.AuthorityRepository;
-import com.makeitlouder.repositories.UserRepository;
+import com.makeitlouder.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -29,6 +29,12 @@ public class InitialUsersSetup {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PetStatusRepository petStatusRepository;
+
+    @Autowired
+    GenderRepository genderRepository;
 
     @EventListener
     @Transactional
@@ -54,6 +60,20 @@ public class InitialUsersSetup {
         adminUser.setRoles(new HashSet<>(Arrays.asList(roleAdmin)));
 
         userRepository.save(adminUser);
+
+        PetStatus available = PetStatus.builder().name("AVAILABLE").build();
+        PetStatus reserved = PetStatus.builder().name("RESERVED").build();
+
+        Gender male = Gender.builder().name("Male").build();
+        Gender female = Gender.builder().name("Female").build();
+
+        Set petStatus = new HashSet(Arrays.asList(available, reserved));
+        Set gender = new HashSet(Arrays.asList(male, female));
+
+
+        petStatusRepository.saveAll(petStatus);
+        genderRepository.saveAll(gender);
+
     }
 
     private Authority createAuthority(String name) {
@@ -76,5 +96,12 @@ public class InitialUsersSetup {
         }
         return role;
     }
+
+
+
+
+
+
+
 
 }

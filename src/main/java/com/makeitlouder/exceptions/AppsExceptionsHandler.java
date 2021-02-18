@@ -31,6 +31,15 @@ public class AppsExceptionsHandler {
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = { ReservationServiceException.class })
+    public ResponseEntity<Object> handleReservationServiceException(ReservationServiceException ex, WebRequest request) {
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .timeStamp(new Date())
+                .message(ex.getMessage()).build();
+
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<Object> handleOtherException(Exception ex, WebRequest request) {

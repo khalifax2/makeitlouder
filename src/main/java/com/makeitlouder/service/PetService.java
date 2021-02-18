@@ -1,14 +1,14 @@
 package com.makeitlouder.service;
 
 import com.makeitlouder.domain.Pet;
-import com.makeitlouder.shared.dto.PetDto;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface PetService {
     Pet findByName(String name);
-    Pet findPetById(Long id);
+    Pet getPetById(Long id);
     Pet createPet(Pet pet);
     Pet updatePet(Long id, Pet pet);
+    List<Pet> getPets(int page, int limit);
     void deletePet(Long id);
 }
