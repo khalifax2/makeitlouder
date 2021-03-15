@@ -1,15 +1,11 @@
 package com.makeitlouder.shared.mappers;
 
-import com.makeitlouder.domain.Pet;
-import com.makeitlouder.domain.PetStatus;
-import com.makeitlouder.domain.Reservation;
-import com.makeitlouder.domain.User;
+import com.makeitlouder.domain.*;
+import com.makeitlouder.domain.enumerated.Status;
 import com.makeitlouder.exceptions.ReservationServiceException;
 import com.makeitlouder.repositories.PetRepository;
-import com.makeitlouder.repositories.PetStatusRepository;
 import com.makeitlouder.repositories.UserRepository;
 import com.makeitlouder.shared.dto.ReservationDTO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -23,8 +19,6 @@ public abstract class ReservationMapperDecorator implements ReservationMapper {
     @Autowired
     private PetRepository petRepository;
 
-    @Autowired
-    private PetStatusRepository petStatusRepository;
 
     @Autowired
     @Qualifier("delegate")
@@ -37,12 +31,12 @@ public abstract class ReservationMapperDecorator implements ReservationMapper {
         User foundUser = userRepository.findById(reservationDTO.getUserId()).get();
         Pet foundPet = petRepository.findById(reservationDTO.getPetId()).get();
 
-        if (foundPet.getPetStatus().getName().equals("RESERVED"))
+        if (foundPet.getPetStatus().equals(Status.RESERVED))
             throw new ReservationServiceException("Pet was already reserved!");
 
         reservation.setUser(Arrays.asList(foundUser));
         reservation.setPet(foundPet);
-        foundPet.setPetStatus(petStatusRepository.findByName("RESERVED"));
+        foundPet.setPetStatus(Status.RESERVED);
         reservation.setReservationDate(reservationDTO.getReservationDate());
 
         return reservation;

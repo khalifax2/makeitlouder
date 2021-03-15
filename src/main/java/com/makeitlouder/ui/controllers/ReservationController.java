@@ -6,6 +6,7 @@ import com.makeitlouder.shared.dto.ReservationDTO;
 import com.makeitlouder.shared.mappers.ReservationMapper;
 import com.makeitlouder.ui.model.response.OperationalStatusModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @GetMapping("/{id}")
     public ReservationDTO getReservation(@PathVariable UUID id) {
         return reservationService.getReservation(id);
@@ -29,6 +31,7 @@ public class ReservationController {
         return reservationService.createReservation(reservationDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<ReservationDTO> getReservations(@RequestParam(value = "page") int page,
                                                 @RequestParam(value = "limit") int limit) {
@@ -38,11 +41,13 @@ public class ReservationController {
         return reservationList;
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @PutMapping("/{id}")
     public ReservationDTO updateReservation(@PathVariable UUID id, @RequestBody ReservationDTO reservationDTO) {
         return reservationService.updateReservation(id, reservationDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     @DeleteMapping("/{id}")
     public OperationalStatusModel deleteReservation(@PathVariable UUID id) {
         reservationService.deleteReservation(id);

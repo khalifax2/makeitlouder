@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     private String encryptedPassword;
 
     @Column(nullable = false)
-    private boolean emailVerificationStatus = false;
+    private boolean isVerified = false;
 
     private String emailVerificationToken;
 
@@ -62,7 +62,7 @@ public class User extends BaseEntity {
 
     @Builder
     public User(Integer version, Timestamp createdDate, Timestamp lastModified, UUID id, String firstName,
-                String lastName, String email, String encryptedPassword, boolean emailVerificationStatus,
+                String lastName, String email, String encryptedPassword, boolean isVerified,
                 String emailVerificationToken, Address address, Set<Role> roles) {
         super(version, createdDate, lastModified);
         this.id = id;
@@ -70,7 +70,7 @@ public class User extends BaseEntity {
         this.lastName = lastName;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
-        this.emailVerificationStatus = emailVerificationStatus;
+        this.isVerified = isVerified;
         this.emailVerificationToken = emailVerificationToken;
         this.address = address;
         this.roles = roles;

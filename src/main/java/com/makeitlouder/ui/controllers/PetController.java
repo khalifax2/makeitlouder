@@ -4,6 +4,7 @@ import com.makeitlouder.domain.Pet;
 import com.makeitlouder.service.PetService;
 import com.makeitlouder.ui.model.response.OperationalStatusModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class PetController {
         return foundPet;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Pet createPet(@RequestBody Pet pet) {
         Pet createdPet = petService.createPet(pet);
@@ -35,12 +37,14 @@ public class PetController {
         return petLists;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {
         Pet foundPet = petService.updatePet(id, pet);
         return foundPet;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public OperationalStatusModel deletePet(@PathVariable Long id) {
         petService.deletePet(id);

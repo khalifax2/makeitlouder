@@ -1,11 +1,12 @@
 package com.makeitlouder.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.makeitlouder.domain.enumerated.Gender;
+import com.makeitlouder.domain.enumerated.Status;
+import com.makeitlouder.domain.enumerated.Type;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -26,23 +27,19 @@ public class Pet extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String imagePath;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "pet_type_id")
-    private PetType petType;
+    @Enumerated(EnumType.STRING)
+    private Type petType;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "pet_status_id")
-    private PetStatus petStatus;
+    @Enumerated(EnumType.STRING)
+    private Status petStatus;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
 
     @Builder
     public Pet(Integer version, Timestamp createdDate, Timestamp lastModified, Long id,
-               String name, String imagePath, PetType petType, PetStatus petStatus,
-               Gender gender) {
+               String name, String imagePath, Type petType, Status petStatus, Gender gender) {
         super(version, createdDate, lastModified);
         this.id = id;
         this.name = name;

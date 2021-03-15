@@ -1,11 +1,9 @@
 package com.makeitlouder.service.impl;
 
 import com.makeitlouder.domain.Pet;
-import com.makeitlouder.domain.PetStatus;
+import com.makeitlouder.domain.enumerated.Status;
 import com.makeitlouder.exceptions.PetServiceException;
-import com.makeitlouder.repositories.GenderRepository;
 import com.makeitlouder.repositories.PetRepository;
-import com.makeitlouder.repositories.PetStatusRepository;
 import com.makeitlouder.service.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,8 +19,6 @@ import java.util.Optional;
 public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
-    private final PetStatusRepository petStatusRepository;
-    private final GenderRepository genderRepository;
 
     @Override
     public Pet findByName(String name) throws PetServiceException {
@@ -48,8 +44,8 @@ public class PetServiceImpl implements PetService {
 
         if (foundPet.isPresent()) throw new PetServiceException("Pet already exists!");
 
-        pet.setPetStatus(petStatusRepository.findByName("AVAILABLE"));
-        pet.setGender(genderRepository.findByName(pet.getGender().getName()));
+        pet.setPetStatus(Status.AVAILABLE);
+        pet.setGender(pet.getGender());
 
         Pet createdPet = petRepository.save(pet);
 

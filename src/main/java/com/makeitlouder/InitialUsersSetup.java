@@ -1,7 +1,5 @@
 package com.makeitlouder;
 
-import com.makeitlouder.domain.Gender;
-import com.makeitlouder.domain.PetStatus;
 import com.makeitlouder.domain.User;
 import com.makeitlouder.domain.security.Authority;
 import com.makeitlouder.domain.security.Role;
@@ -30,11 +28,6 @@ public class InitialUsersSetup {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    PetStatusRepository petStatusRepository;
-
-    @Autowired
-    GenderRepository genderRepository;
 
     @EventListener
     @Transactional
@@ -54,26 +47,12 @@ public class InitialUsersSetup {
         adminUser.setFirstName("Chupapi");
         adminUser.setLastName("Karpalov");
         adminUser.setEmail("admin@gmail.com");
-        adminUser.setEmailVerificationStatus(true);
+        adminUser.setVerified(true);
         adminUser.setId(UUID.randomUUID());
         adminUser.setEncryptedPassword(bCryptPasswordEncoder.encode("123"));
         adminUser.setRoles(new HashSet<>(Arrays.asList(roleAdmin)));
 
         userRepository.save(adminUser);
-
-        PetStatus available = PetStatus.builder().name("AVAILABLE").build();
-        PetStatus reserved = PetStatus.builder().name("RESERVED").build();
-
-        Gender male = Gender.builder().name("Male").build();
-        Gender female = Gender.builder().name("Female").build();
-
-        Set petStatus = new HashSet(Arrays.asList(available, reserved));
-        Set gender = new HashSet(Arrays.asList(male, female));
-
-
-        petStatusRepository.saveAll(petStatus);
-        genderRepository.saveAll(gender);
-
     }
 
     private Authority createAuthority(String name) {

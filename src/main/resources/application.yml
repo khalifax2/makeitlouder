@@ -1,0 +1,42 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:h2:mem:mydb
+
+  h2:
+    console:
+      enabled: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+server:
+  error:
+    include-stacktrace: never
+  servlet:
+    context-path: /api/v1
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+tokenSecret: h2KEmj24+2ksm192sSM2l4452kk

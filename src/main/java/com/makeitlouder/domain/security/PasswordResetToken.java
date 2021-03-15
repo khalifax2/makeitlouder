@@ -1,25 +1,26 @@
 package com.makeitlouder.domain.security;
 
-import com.makeitlouder.domain.BaseEntity;
 import com.makeitlouder.domain.User;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.UUID;
 
-@Setter
+
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "password_reset_token")
-public class PasswordResetToken  {
+public class PasswordResetToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    private UUID id;
 
     private String token;
 

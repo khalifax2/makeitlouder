@@ -23,7 +23,8 @@ public class UserDto extends BaseDto {
     private String email;
     private String password;
     private String encryptedPassword;
-    private boolean emailVerificationToken = false;
+    private String emailVerificationToken;
+    private boolean emailVerificationStatus = false;
     private AddressDto address;
     private Set<String> roles;
 
