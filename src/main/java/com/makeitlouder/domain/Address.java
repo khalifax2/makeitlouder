@@ -22,10 +22,10 @@ public class Address {
     private UUID id;
 
     @Column(nullable = false, length = 120)
-    private String streetName;
+    private String street;
 
     @Column(nullable = false, length = 50)
-    private String country;
+    private String state;
 
     @Column(nullable = false, length = 50)
     private String city;

@@ -27,6 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
+    private final CustomAuthenticationEntryPoint unauthorizedHandler;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,9 +44,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, SecurityConstants.VERFICATION_EMAIL_URL).permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_REQUEST_URL).permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL).permitAll()
+                .antMatchers(HttpMethod.GET, SecurityConstants.PET_LIST).permitAll()
                 .antMatchers(SecurityConstants.H2_CONSOLE).permitAll()
             .anyRequest()
-                .authenticated();
+                .authenticated()
+            .and()
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
+
 
         http.headers().frameOptions().disable();
     }
@@ -52,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
+
     }
 
     public JwtUsernameAndPasswordAuthenticationFilter getJwtAuthenticationFilter() throws Exception {
@@ -72,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));

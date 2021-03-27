@@ -7,7 +7,8 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE,
+        uses = ReservationDateMapper.class)
 @DecoratedWith(ReservationMapperDecorator.class)
 public interface ReservationMapper {
 

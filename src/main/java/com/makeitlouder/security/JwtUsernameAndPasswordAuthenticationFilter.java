@@ -1,6 +1,7 @@
 package com.makeitlouder.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.makeitlouder.domain.security.UserPrincipal;
 import com.makeitlouder.ui.model.request.UserLoginRequestModel;
 import io.jsonwebtoken.Jwts;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -19,8 +21,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
+import java.lang.Object;
 
 
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -34,7 +38,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-
+        System.out.println("ATTEMPT");
         try {
             UserLoginRequestModel creds = new ObjectMapper()
                     .readValue(request.getInputStream(), UserLoginRequestModel.class);
@@ -67,6 +71,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .compact();
 
         response.addHeader(SecurityConstants.AUTHORIZATION_HEADER,  SecurityConstants.TOKEN_PREFIX + token);
-
+        
     }
+
+
+
 }

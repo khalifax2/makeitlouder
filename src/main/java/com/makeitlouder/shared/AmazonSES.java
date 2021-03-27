@@ -15,14 +15,18 @@ public class AmazonSES {
     final String SUBJECT = "One last step to complete your registration";
     final String PASSWORD_RESET_SUBJECT = "Password reset request";
 
-    final String HTML_BODY ="<h1>Please verify your email address</h1>"
+    final String VERIFY_HTML_BODY ="<h1>Please verify your email address</h1>"
             + "<p>Thank you for registering with our mobile app. To complete registration process and be able to log in,"
+            + "<a href='http://localhost:3000/email-verification?token=$tokenValue'>"
+//            + "<a href='http://localhost:8080/api/v1/users/email-verification?token=$tokenValue'>"
             + " click on the following link: "
-            + "<a href='http://localhost:8080/api/v1/users/email-verification?token=$tokenValue'>"
             + "Final step to complete your registration" + "</a><br/><br/>"
             + "Thank you! And we are waiting for you inside!";
 
-    final String TEXT_BODY = "Please verify your email address. "
+
+
+
+    final String VERIFY_TEXT_BODY = "Please verify your email address. "
             + "Thank you for registering with our mobile app. To complete registration process and be able to log in,"
             + " open then the following URL in your browser window: "
             + " <a href='http://localhost:8080/api/v1/users/email-verification?token=$tokenValue'>"
@@ -48,8 +52,8 @@ public class AmazonSES {
     public void verifyEmail(UserDto userDto) {
         AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
 
-        String htmlBodyWithToken = HTML_BODY.replace("$tokenValue", userDto.getEmailVerificationToken());
-        String textBodyWithToken = TEXT_BODY.replace("$tokenValue", userDto.getEmailVerificationToken());
+        String htmlBodyWithToken = VERIFY_HTML_BODY.replace("$tokenValue", userDto.getEmailVerificationToken());
+        String textBodyWithToken = VERIFY_TEXT_BODY.replace("$tokenValue", userDto.getEmailVerificationToken());
 
         SendEmailRequest request = new SendEmailRequest()
                 .withDestination(new Destination().withToAddresses(userDto.getEmail()))

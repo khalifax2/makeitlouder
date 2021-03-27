@@ -7,12 +7,14 @@ import com.makeitlouder.shared.mappers.UserMapper;
 import com.makeitlouder.ui.model.request.PasswordResetModel;
 import com.makeitlouder.ui.model.request.PasswordResetRequestModel;
 import com.makeitlouder.ui.model.request.UserDetailsRequestModel;
+import com.makeitlouder.ui.model.request.UserLoginRequestModel;
 import com.makeitlouder.ui.model.response.OperationalStatusModel;
 import com.makeitlouder.ui.model.response.UserRest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.*;
 
 @RestController
@@ -27,6 +29,19 @@ public class UserController {
     public UserRest getUserById(@PathVariable UUID id) {
         UserDto foundUser = userService.getUserById(id);
         UserRest user = userMapper.UserDtoToUserRest(foundUser);
+        return user;
+    }
+
+    @PostMapping("/checkUser")
+    public void checkUser(@RequestBody UserLoginRequestModel userLoginRequestModel) {
+        userService.getUserByEmail(userLoginRequestModel.getEmail());
+    }
+
+    @GetMapping("/username")
+    public UserRest getCurrentUser(Principal principal) {
+        UserDto currentUser = userService.getUserByEmail(principal.getName());
+        UserRest user = userMapper.UserDtoToUserRest(currentUser);
+
         return user;
     }
 

@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class AddressRequestModel {
-    private String streetName;
-    private String country;
+    private String street;
+    private String state;
     private String city;
     private String postalCode;
 }

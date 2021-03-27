@@ -35,18 +35,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         String authorizationHeader = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 
+
         if (authorizationHeader == null || !authorizationHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request, authorizationHeader);
+        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(authorizationHeader);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request, response);
 
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, String token) throws RuntimeException {
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) throws RuntimeException {
 
         try {
 

@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class Reservation extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
-    private Timestamp reservationDate;
+    private Date reservationDate;
 
     @ManyToMany
     @JoinTable(

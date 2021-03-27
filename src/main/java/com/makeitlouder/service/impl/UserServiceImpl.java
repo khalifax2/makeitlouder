@@ -12,9 +12,12 @@ import com.makeitlouder.shared.Utils;
 import com.makeitlouder.shared.dto.UserDto;
 import com.makeitlouder.shared.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.context.MessageSourceProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,10 +50,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByEmail(String email) throws UsernameNotFoundException {
+    public UserDto getUserByEmail(String email) throws UserServiceException {
         Optional<User> foundUser = userRepository.findByEmail(email);
 
-        if (foundUser.isEmpty()) throw new UsernameNotFoundException(email);
+        if (foundUser.isEmpty()) throw new UserServiceException("User not found!");
 
         UserDto user = userMapper.UserEntityToUserDto(foundUser.get());
 
@@ -81,6 +84,9 @@ public class UserServiceImpl implements UserService {
         user.getAddress().setUser(user);
 
         User createdUser = userRepository.save(user);
+
+//        createdUser.setVerified(true);
+
         UserDto savedUser = userMapper.UserEntityToUserDto(createdUser);
 
         amazonSES.verifyEmail(savedUser);

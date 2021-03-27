@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.batch.BatchDataSource;
 @AllArgsConstructor
 @Builder
 public class AddressDto {
-    private String streetName;
-    private String country;
+    private String street;
+    private String state;
     private String city;
     private String postalCode;
 }
