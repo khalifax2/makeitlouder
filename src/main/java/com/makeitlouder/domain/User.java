@@ -56,7 +56,7 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles;
 
-    @ManyToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Reservation> reservation;
 
 

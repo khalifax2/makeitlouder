@@ -66,6 +66,19 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    public List<Pet> getAvailablePets(int page, int limit) {
+
+        if (page > 0) page -= 1;
+
+        Pageable pageRequest = PageRequest.of(page, limit);
+
+        Page<Pet> petLists = petRepository.getAvailablePets(pageRequest);
+        List<Pet> pets = petLists.getContent();
+
+        return pets;
+    }
+
+    @Override
     public Pet updatePet(Long id, Pet pet) throws PetServiceException {
         Optional<Pet> foundPet = petRepository.findById(id);
 

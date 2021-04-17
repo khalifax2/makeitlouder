@@ -2,6 +2,7 @@ package com.makeitlouder.service;
 
 import com.makeitlouder.domain.Reservation;
 import com.makeitlouder.shared.dto.ReservationDTO;
+import com.makeitlouder.shared.dto.ReservedPetDto;
 import lombok.Setter;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface ReservationService {
     ReservationDTO updateReservation(UUID id, ReservationDTO reservation);
     List<ReservationDTO> getReservations(int page, int param);
     void deleteReservation(UUID id);
+    List<ReservedPetDto> getUserReservation(UUID userId);
+
 
 }

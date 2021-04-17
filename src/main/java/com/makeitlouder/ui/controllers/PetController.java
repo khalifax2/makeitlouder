@@ -39,6 +39,14 @@ public class PetController {
         return petLists;
     }
 
+    @GetMapping("/available")
+    public List<Pet> getAvailablePets(@RequestParam(value = "page") int page,
+                                      @RequestParam(value = "limit") int limit) {
+        List<Pet> petLists = petService.getAvailablePets(page, limit);
+
+        return petLists;
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {

@@ -25,15 +25,11 @@ public class Reservation extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
-    private Date reservationDate;
+    private Timestamp reservationDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "reservation_users",
-            joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
-    private List<User> user;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     @OneToOne
     private Pet pet;

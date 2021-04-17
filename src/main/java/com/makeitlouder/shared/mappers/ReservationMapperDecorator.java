@@ -6,6 +6,7 @@ import com.makeitlouder.exceptions.ReservationServiceException;
 import com.makeitlouder.repositories.PetRepository;
 import com.makeitlouder.repositories.UserRepository;
 import com.makeitlouder.shared.dto.ReservationDTO;
+import com.makeitlouder.shared.dto.ReservedPetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -34,7 +35,7 @@ public abstract class ReservationMapperDecorator implements ReservationMapper {
         if (foundPet.getPetStatus().equals(Status.RESERVED))
             throw new ReservationServiceException("Pet was already reserved!");
 
-        reservation.setUser(Arrays.asList(foundUser));
+        reservation.setUser(foundUser);
         reservation.setPet(foundPet);
         foundPet.setPetStatus(Status.RESERVED);
         reservation.setReservationDate(reservationDTO.getReservationDate());
@@ -45,8 +46,16 @@ public abstract class ReservationMapperDecorator implements ReservationMapper {
     @Override
     public ReservationDTO ReservationToReservationDTO(Reservation reservation) {
         ReservationDTO reservationDTO = reservationMapper.ReservationToReservationDTO(reservation);
-        reservationDTO.setUserId(reservation.getUser().get(0).getId());
+        reservationDTO.setUserId(reservation.getUser().getId());
 
         return reservationDTO;
+    }
+
+    @Override
+    public ReservedPetDto ReservationToReservedPetDto(Reservation reservation) {
+        ReservedPetDto reservedPetDTO = reservationMapper.ReservationToReservedPetDto(reservation);
+        reservedPetDTO.setPet(reservation.getPet());
+        reservedPetDTO.setUserId(reservation.getUser().getId());
+        return reservedPetDTO;
     }
 }

@@ -8,6 +8,7 @@ public class SecurityConstants {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String SIGN_UP_URL = "/users";
     public static final String PET_LIST = "/pets";
+    public static final String PET_DETAILS = "/pets/{id}";
     public static final String VERFICATION_EMAIL_URL = "/users/email-verification";
     public static final String PASSWORD_RESET_REQUEST_URL = "/users/password-reset-request";
     public static final String PASSWORD_RESET_URL = "/users/password-reset";

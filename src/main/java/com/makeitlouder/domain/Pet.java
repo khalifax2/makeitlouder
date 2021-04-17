@@ -36,6 +36,9 @@ public class Pet extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @OneToOne
+    private Reservation reservation;
+
 
     @Builder
     public Pet(Integer version, Timestamp createdDate, Timestamp lastModified, Long id,
@@ -48,4 +51,6 @@ public class Pet extends BaseEntity {
         this.petStatus = petStatus;
         this.gender = gender;
     }
+
+
 }

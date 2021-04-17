@@ -84,6 +84,27 @@ public class InitialDataSetup {
 
         userRepository.save(john);
 
+        Address janeAddress = Address.builder()
+                .street("Gallant 7")
+                .city("Lesure")
+                .state("Brisbane")
+                .postalCode("2222")
+                .build();
+
+        User jane = User.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .email("jane@example.com")
+                .isVerified(true)
+                .encryptedPassword(bCryptPasswordEncoder.encode("123"))
+                .roles(new HashSet<>(Arrays.asList(roleUser)))
+                .address(janeAddress)
+                .build();
+
+        jane.getAddress().setUser(jane);
+
+        userRepository.save(jane);
+
         Pet slurpee = Pet.builder()
                 .name("slurpee")
                 .imagePath("/images/cardImg.png")

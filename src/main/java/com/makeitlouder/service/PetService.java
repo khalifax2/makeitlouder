@@ -10,5 +10,6 @@ public interface PetService {
     Pet createPet(Pet pet);
     Pet updatePet(Long id, Pet pet);
     List<Pet> getPets(int page, int limit);
+    List<Pet> getAvailablePets(int page, int limit);
     void deletePet(Long id);
 }
