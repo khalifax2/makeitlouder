@@ -2,8 +2,7 @@ package com.makeitlouder.domain.security;
 
 import com.makeitlouder.domain.User;
 import com.makeitlouder.domain.security.Role;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.parameters.P;
@@ -15,16 +14,19 @@ import java.util.stream.Stream;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
-
     private static final long serialVersionUID = -8004361076660274304L;
 
     private User user;
     private UUID id;
+    private String username;
 
     public UserPrincipal(User user) {
         this.user = user;
         this.id = user.getId();
+        this.username = user.getEmail();
     }
 
     @Override

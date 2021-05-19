@@ -1,10 +1,9 @@
 package com.makeitlouder.shared.mappers;
 
 import com.makeitlouder.domain.Reservation;
-import com.makeitlouder.shared.dto.ReservationDTO;
+import com.makeitlouder.shared.dto.ReservationDto;
 import com.makeitlouder.shared.dto.ReservedPetDto;
 import org.mapstruct.DecoratedWith;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,10 +11,11 @@ import org.mapstruct.Mapping;
 @DecoratedWith(ReservationMapperDecorator.class)
 public interface ReservationMapper {
 
-    Reservation ReservationDTOtoReservation(ReservationDTO reservationDTO);
+    Reservation ReservationDtoToReservation(ReservationDto reservationDTO);
     @Mapping(source = "id", target = "reservationId")
     @Mapping(source = "pet.id", target = "petId")
-    ReservationDTO ReservationToReservationDTO(Reservation reservation);
+    ReservationDto ReservationToReservationDto(Reservation reservation);
     @Mapping(source = "id", target = "reservationId")
     ReservedPetDto ReservationToReservedPetDto(Reservation reservation);
 }
+

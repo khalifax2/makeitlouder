@@ -5,12 +5,10 @@ import com.makeitlouder.domain.enumerated.Status;
 import com.makeitlouder.exceptions.ReservationServiceException;
 import com.makeitlouder.repositories.PetRepository;
 import com.makeitlouder.repositories.UserRepository;
-import com.makeitlouder.shared.dto.ReservationDTO;
+import com.makeitlouder.shared.dto.ReservationDto;
 import com.makeitlouder.shared.dto.ReservedPetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
-import java.util.Arrays;
 
 public abstract class ReservationMapperDecorator implements ReservationMapper {
 
@@ -26,8 +24,8 @@ public abstract class ReservationMapperDecorator implements ReservationMapper {
     private ReservationMapper reservationMapper;
 
     @Override
-    public Reservation ReservationDTOtoReservation(ReservationDTO reservationDTO) throws ReservationServiceException {
-        Reservation reservation = reservationMapper.ReservationDTOtoReservation(reservationDTO);
+    public Reservation ReservationDtoToReservation(ReservationDto reservationDTO) throws ReservationServiceException {
+        Reservation reservation = reservationMapper.ReservationDtoToReservation(reservationDTO);
 
         User foundUser = userRepository.findById(reservationDTO.getUserId()).get();
         Pet foundPet = petRepository.findById(reservationDTO.getPetId()).get();
@@ -44,8 +42,8 @@ public abstract class ReservationMapperDecorator implements ReservationMapper {
     }
 
     @Override
-    public ReservationDTO ReservationToReservationDTO(Reservation reservation) {
-        ReservationDTO reservationDTO = reservationMapper.ReservationToReservationDTO(reservation);
+    public ReservationDto ReservationToReservationDto(Reservation reservation) {
+        ReservationDto reservationDTO = reservationMapper.ReservationToReservationDto(reservation);
         reservationDTO.setUserId(reservation.getUser().getId());
 
         return reservationDTO;

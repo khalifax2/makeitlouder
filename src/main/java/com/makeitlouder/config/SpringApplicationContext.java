@@ -1,4 +1,4 @@
-package com.makeitlouder;
+package com.makeitlouder.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

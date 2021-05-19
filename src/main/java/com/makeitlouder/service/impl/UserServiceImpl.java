@@ -1,5 +1,6 @@
 package com.makeitlouder.service.impl;
 
+import com.makeitlouder.domain.Address;
 import com.makeitlouder.domain.User;
 import com.makeitlouder.domain.security.PasswordResetToken;
 import com.makeitlouder.exceptions.UserServiceException;
@@ -45,8 +46,9 @@ public class UserServiceImpl implements UserService {
 
         if (foundUser.isEmpty())
             throw new UsernameNotFoundException("Email: " + email + " not found!");
+        UserPrincipal user = new UserPrincipal(foundUser.get());
 
-        return new UserPrincipal(foundUser.get());
+        return user;
     }
 
     @Override
@@ -121,6 +123,10 @@ public class UserServiceImpl implements UserService {
 
         foundUser.get().setFirstName(userDetails.getFirstName());
         foundUser.get().setLastName(userDetails.getLastName());
+        foundUser.get().getAddress().setStreet(userDetails.getAddress().getStreet());
+        foundUser.get().getAddress().setCity(userDetails.getAddress().getCity());
+        foundUser.get().getAddress().setState(userDetails.getAddress().getState());
+        foundUser.get().getAddress().setPostalCode(userDetails.getAddress().getPostalCode());
 
         User updatedUser = userRepository.save(foundUser.get());
         UserDto user = userMapper.UserEntityToUserDto(updatedUser);

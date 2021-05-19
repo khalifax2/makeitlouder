@@ -1,20 +1,16 @@
 package com.makeitlouder.domain.security;
 
-import com.makeitlouder.domain.BaseEntity;
 import com.makeitlouder.domain.User;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Set;
-import java.util.UUID;
 
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "roles")

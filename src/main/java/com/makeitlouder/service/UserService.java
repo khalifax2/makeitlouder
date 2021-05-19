@@ -1,7 +1,5 @@
 package com.makeitlouder.service;
 
-import com.makeitlouder.domain.User;
-import com.makeitlouder.shared.dto.ReservationDTO;
 import com.makeitlouder.shared.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

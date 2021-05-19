@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReservationDTO {
+public class ReservationDto {
     private UUID reservationId;
     private Timestamp reservationDate;
     private UUID userId;

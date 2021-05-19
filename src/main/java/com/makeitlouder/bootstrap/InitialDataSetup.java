@@ -4,6 +4,7 @@ import com.makeitlouder.domain.Address;
 import com.makeitlouder.domain.Pet;
 import com.makeitlouder.domain.User;
 import com.makeitlouder.domain.enumerated.Gender;
+import com.makeitlouder.domain.enumerated.Roles;
 import com.makeitlouder.domain.enumerated.Status;
 import com.makeitlouder.domain.enumerated.Type;
 import com.makeitlouder.domain.security.Authority;
@@ -47,19 +48,22 @@ public class InitialDataSetup {
         Authority writeAuthority = createAuthority("WRITE_AUTHORITY");
         Authority deleteAuthority = createAuthority("DELETE_AUTHORITY");
 
+
         Role roleUser = createRole("ROLE_USER", new HashSet<>(Arrays.asList(readAuthority, writeAuthority)));
         Role roleAdmin = createRole("ROLE_ADMIN", new HashSet<>(Arrays.asList(readAuthority, writeAuthority, deleteAuthority)));
+        Role roleSuperAdmin = createRole("ROLE_SUPER_ADMIN", new HashSet<>(Arrays.asList(readAuthority, writeAuthority, deleteAuthority)));
 
-        if (roleAdmin == null) return;
+
+        if (roleUser == null) return;
 
         User adminUser = User.builder()
             .id(UUID.randomUUID())
-            .firstName("Chupapi")
-            .lastName("Karpalov")
-            .email("admin@gmail.com")
+            .firstName("Son")
+            .lastName("Goku")
+            .email("admin@example.com")
             .isVerified(true)
             .encryptedPassword(bCryptPasswordEncoder.encode("123"))
-            .roles(new HashSet<>(Arrays.asList(roleAdmin))).build();
+            .roles(new HashSet<>(Arrays.asList(roleAdmin, roleSuperAdmin))).build();
 
         userRepository.save(adminUser);
 
@@ -107,42 +111,36 @@ public class InitialDataSetup {
 
         Pet slurpee = Pet.builder()
                 .name("slurpee")
-                .imagePath("/images/cardImg.png")
                 .petType(Type.DOG)
                 .petStatus(Status.AVAILABLE)
                 .gender(Gender.FEMALE).build();
 
         Pet tyler = Pet.builder()
                 .name("tyler")
-                .imagePath("/images/cardImg.png")
                 .petType(Type.DOG)
                 .petStatus(Status.AVAILABLE)
                 .gender(Gender.MALE).build();
 
         Pet cassey = Pet.builder()
                 .name("cassey")
-                .imagePath("/images/cardImg.png")
                 .petType(Type.DOG)
                 .petStatus(Status.AVAILABLE)
                 .gender(Gender.FEMALE).build();
 
         Pet eklay = Pet.builder()
                 .name("eklay")
-                .imagePath("/images/cardImg.png")
                 .petType(Type.CAT)
                 .petStatus(Status.AVAILABLE)
                 .gender(Gender.FEMALE).build();
 
         Pet doro = Pet.builder()
                 .name("doro")
-                .imagePath("/images/cardImg.png")
                 .petType(Type.CAT)
                 .petStatus(Status.AVAILABLE)
                 .gender(Gender.MALE).build();
 
         Pet ponyang = Pet.builder()
                 .name("ponyang")
-                .imagePath("/images/cardImg.png")
                 .petType(Type.CAT)
                 .petStatus(Status.AVAILABLE)
                 .gender(Gender.FEMALE).build();

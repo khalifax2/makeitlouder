@@ -1,14 +1,15 @@
 package com.makeitlouder.service.impl;
 
-import com.makeitlouder.domain.Pet;
 import com.makeitlouder.domain.Reservation;
 import com.makeitlouder.domain.User;
 import com.makeitlouder.domain.enumerated.Status;
 import com.makeitlouder.exceptions.ReservationServiceException;
+import com.makeitlouder.repositories.PetRepository;
 import com.makeitlouder.repositories.ReservationRepository;
 import com.makeitlouder.repositories.UserRepository;
 import com.makeitlouder.service.ReservationService;
-import com.makeitlouder.shared.dto.ReservationDTO;
+import com.makeitlouder.shared.dto.ReservationCount;
+import com.makeitlouder.shared.dto.ReservationDto;
 import com.makeitlouder.shared.dto.ReservedPetDto;
 import com.makeitlouder.shared.mappers.ReservationMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,15 +28,16 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
     private final UserRepository userRepository;
+    private final PetRepository petRepository;
 
 
     @Override
-    public ReservationDTO getReservation(UUID id) throws ReservationServiceException {
+    public ReservationDto getReservation(UUID id) throws ReservationServiceException {
         Optional<Reservation> foundReservation = reservationRepository.findById(id);
 
         if (foundReservation.isEmpty()) throw new ReservationServiceException("Reservation not found!");
 
-        ReservationDTO reservation = reservationMapper.ReservationToReservationDTO(foundReservation.get());
+        ReservationDto reservation = reservationMapper.ReservationToReservationDto(foundReservation.get());
 
         return reservation;
     }
@@ -59,16 +57,16 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationDTO createReservation(ReservationDTO reservationDTO) throws ReservationServiceException {
-        Reservation reservation = reservationMapper.ReservationDTOtoReservation(reservationDTO);
+    public ReservationDto createReservation(ReservationDto reservationDTO) throws ReservationServiceException {
+        Reservation reservation = reservationMapper.ReservationDtoToReservation(reservationDTO);
         Reservation createdReservation = reservationRepository.save(reservation);
-        ReservationDTO savedReservation = reservationMapper.ReservationToReservationDTO(createdReservation);
+        ReservationDto savedReservation = reservationMapper.ReservationToReservationDto(createdReservation);
 
         return savedReservation;
     }
 
     @Override
-    public List<ReservationDTO> getReservations(int page, int limit) {
+    public List<ReservationDto> getReservations(int page, int limit) {
         if (page > 0) page -= 1;
 
         Pageable pageableRequest = PageRequest.of(page, limit);
@@ -76,10 +74,10 @@ public class ReservationServiceImpl implements ReservationService {
         Page<Reservation> reservationsList = reservationRepository.findAll(pageableRequest);
         List<Reservation> reservations = reservationsList.getContent();
 
-        List<ReservationDTO> reservationDTOList = new ArrayList<>();
+        List<ReservationDto> reservationDTOList = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
-            ReservationDTO reservationDTO = reservationMapper.ReservationToReservationDTO(reservation);
+            ReservationDto reservationDTO = reservationMapper.ReservationToReservationDto(reservation);
             reservationDTOList.add(reservationDTO);
         }
 
@@ -87,7 +85,22 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationDTO updateReservation(UUID id, ReservationDTO reservationDTO) throws ReservationServiceException{
+    public List<ReservationDto> getReservationForPickupToday(int page, int limit) {
+        if (page > 0) page -= 1;
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
+        Page<Reservation> reservationsList = reservationRepository.getReservationForPickupToday(pageableRequest);
+        List<Reservation> reservations = reservationsList.getContent();
+
+        List<ReservationDto> reservationDto = reservations.stream()
+                .map(r -> reservationMapper.ReservationToReservationDto(r)).collect(Collectors.toList());
+
+        return reservationDto;
+    }
+
+    @Override
+    public ReservationDto updateReservation(UUID id, ReservationDto reservationDTO) throws ReservationServiceException{
         Optional<Reservation> foundReservation = reservationRepository.findById(id);
 
         if (foundReservation.isEmpty()) throw new ReservationServiceException("Reservation not found!");
@@ -95,7 +108,7 @@ public class ReservationServiceImpl implements ReservationService {
         foundReservation.get().setReservationDate(reservationDTO.getReservationDate());
 
         Reservation updatedReservation = reservationRepository.save(foundReservation.get());
-        ReservationDTO savedReservation = reservationMapper.ReservationToReservationDTO(updatedReservation);
+        ReservationDto savedReservation = reservationMapper.ReservationToReservationDto(updatedReservation);
 
         return savedReservation;
     }
@@ -110,4 +123,20 @@ public class ReservationServiceImpl implements ReservationService {
 
         reservationRepository.delete(foundReservation.get());
     }
+
+    @Override
+    public ReservationCount getReservationCount() {
+        Integer currentReservationCount = reservationRepository.getCurrentReservationCount();
+        Integer petCount = petRepository.getAvailablePetsCount();
+        Integer forPickupCount = reservationRepository.getReservationForPickupCount();
+
+        ReservationCount count = ReservationCount.builder()
+                .reservations(currentReservationCount)
+                .forPickup(forPickupCount)
+                .availablePet(petCount).build();
+
+        return count;
+    }
+
+
 }

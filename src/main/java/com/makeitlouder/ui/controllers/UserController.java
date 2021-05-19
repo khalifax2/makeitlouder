@@ -1,5 +1,6 @@
 package com.makeitlouder.ui.controllers;
 
+import com.makeitlouder.domain.enumerated.Roles;
 import com.makeitlouder.security.SecurityConstants;
 import com.makeitlouder.service.UserService;
 import com.makeitlouder.shared.dto.UserDto;
@@ -32,11 +33,6 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/checkUser")
-    public void checkUser(@RequestBody UserLoginRequestModel userLoginRequestModel) {
-        userService.getUserByEmail(userLoginRequestModel.getEmail());
-    }
-
     @GetMapping("/username")
     public UserRest getCurrentUser(Principal principal) {
         UserDto currentUser = userService.getUserByEmail(principal.getName());
@@ -57,7 +53,19 @@ public class UserController {
         return user;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin")
+    public UserRest createAdmin(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
+
+        UserDto userDto = userMapper.UserDetailsRequestToUserDto(userDetails);
+        userDto.setRoles(new HashSet<>(Arrays.asList("ROLE_ADMIN")));
+
+        UserDto createdUser = userService.createUser(userDto);
+        UserRest user = userMapper.UserDtoToUserRest(createdUser);
+
+        return user;
+    }
+
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "limit", defaultValue = "2") int limit

@@ -16,4 +16,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
     @Query("SELECT pet FROM Pet pet WHERE pet.petStatus = 'AVAILABLE'")
     Page<Pet> getAvailablePets(Pageable page);
+
+    @Query("SELECT COUNT(pet) FROM Pet pet WHERE pet.petStatus = 'AVAILABLE'")
+    Integer getAvailablePetsCount();
 }

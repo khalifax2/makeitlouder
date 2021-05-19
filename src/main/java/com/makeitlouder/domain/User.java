@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity {

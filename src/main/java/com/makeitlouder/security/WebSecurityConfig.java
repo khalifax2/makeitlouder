@@ -3,6 +3,7 @@ package com.makeitlouder.security;
 import com.makeitlouder.repositories.UserRepository;
 import com.makeitlouder.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
     private final CustomAuthenticationEntryPoint unauthorizedHandler;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL).permitAll()
                 .antMatchers(HttpMethod.GET, SecurityConstants.PET_LIST).permitAll()
                 .antMatchers(HttpMethod.GET, SecurityConstants.PET_DETAILS).permitAll()
+                .antMatchers(HttpMethod.GET, SecurityConstants.PET_IMAGES).permitAll()
+                .antMatchers(HttpMethod.POST, SecurityConstants.MESSAGE).permitAll()
                 .antMatchers(SecurityConstants.H2_CONSOLE).permitAll()
             .anyRequest()
                 .authenticated()

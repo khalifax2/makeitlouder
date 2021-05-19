@@ -68,10 +68,16 @@
             <optional>true</optional>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.amazonaws</groupId>-->
+<!--            <artifactId>aws-java-sdk-ses</artifactId>-->
+<!--            <version>1.11.933</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-ses</artifactId>
-            <version>1.11.933</version>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.11.1006</version>
         </dependency>
 
         <dependency>

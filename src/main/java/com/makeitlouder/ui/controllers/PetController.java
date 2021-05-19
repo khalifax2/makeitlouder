@@ -2,10 +2,15 @@ package com.makeitlouder.ui.controllers;
 
 import com.makeitlouder.domain.Pet;
 import com.makeitlouder.service.PetService;
+import com.makeitlouder.shared.dto.PetDto;
 import com.makeitlouder.ui.model.response.OperationalStatusModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.ZoneOffset;
@@ -24,34 +29,42 @@ public class PetController {
         return foundPet;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public Pet createPet(@RequestBody Pet pet) {
-        Pet createdPet = petService.createPet(pet);
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public PetDto createPet(@RequestPart PetDto petDto, @RequestPart(required = false) MultipartFile file) {
+        PetDto createdPet = petService.createPet(petDto, file);
         return createdPet;
     }
 
+
     @GetMapping
-    public List<Pet> getPets(@RequestParam(value = "page") int page,
-                             @RequestParam(value = "limit") int limit) {
-        List<Pet> petLists = petService.getPets(page, limit);
+    public List<PetDto> getPets(@RequestParam(value = "page") int page,
+                                @RequestParam(value = "limit") int limit) {
+        List<PetDto> petLists = petService.getPets(page, limit);
 
         return petLists;
     }
 
     @GetMapping("/available")
-    public List<Pet> getAvailablePets(@RequestParam(value = "page") int page,
-                                      @RequestParam(value = "limit") int limit) {
-        List<Pet> petLists = petService.getAvailablePets(page, limit);
+    public List<PetDto> getAvailablePets(@RequestParam(value = "page") int page,
+                                         @RequestParam(value = "limit") int limit) {
+        List<PetDto> petLists = petService.getAvailablePets(page, limit);
 
         return petLists;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {
-        Pet foundPet = petService.updatePet(id, pet);
-        return foundPet;
+    @PutMapping(
+            path = "/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public PetDto updatePet(@PathVariable Long id,
+                            @RequestPart PetDto petDto,
+                            @RequestPart(required = false) MultipartFile file) {
+        PetDto updatedPet = petService.updatePet(id, petDto, file);
+        return updatedPet;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -62,5 +75,19 @@ public class PetController {
                 .operationName("DELETE").operationResult("SUCCESS").build();
 
         return operation;
+    }
+
+    @PostMapping(
+            path = "/{petProfileId}/image/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void uploadPetProfileImage(@PathVariable("petProfileId") Long petProfileId,
+                                      @RequestParam("file") MultipartFile file) {
+        petService.uploadPetProfileImage(petProfileId,file);
+    }
+
+    @GetMapping(path = "/{petProfileId}/image/download")
+    public byte[] downloadUserProfileImage(@PathVariable("petProfileId") Long petProfileId) {
+        return petService.downloadPetProfileImage(petProfileId);
     }
 }

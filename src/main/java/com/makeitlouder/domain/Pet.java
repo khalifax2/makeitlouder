@@ -7,9 +7,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Optional;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "pet")
@@ -24,7 +24,6 @@ public class Pet extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 100)
     private String imagePath;
 
     @Enumerated(EnumType.STRING)
@@ -52,5 +51,7 @@ public class Pet extends BaseEntity {
         this.gender = gender;
     }
 
-
+    public Optional<String> getImagePath() {
+        return Optional.ofNullable(imagePath);
+    }
 }
