@@ -15,4 +15,5 @@ public class UserDetailsRequestModel {
     private String email;
     private String password;
     private AddressRequestModel address;
+    private boolean admin;
 }

@@ -27,5 +27,6 @@ public class UserDto extends BaseDto {
     private boolean emailVerificationStatus = false;
     private AddressDto address;
     private Set<String> roles;
+    private boolean admin;
 
 }

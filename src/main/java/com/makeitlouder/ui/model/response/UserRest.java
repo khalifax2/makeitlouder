@@ -17,4 +17,5 @@ public class UserRest {
     private String lastName;
     private String email;
     private AddressDto address;
+    private boolean admin;
 }

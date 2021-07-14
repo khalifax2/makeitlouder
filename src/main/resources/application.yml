@@ -26,8 +26,8 @@ tokenSecret: h2KEmj24+2ksm192sSM2l4452kk
 cloud:
   aws:
     credentials:
-      access-key: AKIAXP4M3K32LO2XQZAC
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: ap-southeast-1
     stack:

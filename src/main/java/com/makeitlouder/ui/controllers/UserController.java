@@ -45,7 +45,11 @@ public class UserController {
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
 
         UserDto userDto = userMapper.UserDetailsRequestToUserDto(userDetails);
-        userDto.setRoles(new HashSet<>(Arrays.asList("ROLE_USER")));
+        if (userDetails.isAdmin()) {
+            userDto.setRoles(new HashSet<>(Arrays.asList("ROLE_ADMIN")));
+        } else {
+            userDto.setRoles(new HashSet<>(Arrays.asList("ROLE_USER")));
+        }
 
         UserDto createdUser = userService.createUser(userDto);
         UserRest user = userMapper.UserDtoToUserRest(createdUser);
@@ -53,17 +57,17 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/admin")
-    public UserRest createAdmin(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
-
-        UserDto userDto = userMapper.UserDetailsRequestToUserDto(userDetails);
-        userDto.setRoles(new HashSet<>(Arrays.asList("ROLE_ADMIN")));
-
-        UserDto createdUser = userService.createUser(userDto);
-        UserRest user = userMapper.UserDtoToUserRest(createdUser);
-
-        return user;
-    }
+//    @PostMapping("/admin")
+//    public UserRest createAdmin(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
+//
+//        UserDto userDto = userMapper.UserDetailsRequestToUserDto(userDetails);
+//        userDto.setRoles(new HashSet<>(Arrays.asList("ROLE_ADMIN")));
+//
+//        UserDto createdUser = userService.createUser(userDto);
+//        UserRest user = userMapper.UserDtoToUserRest(createdUser);
+//
+//        return user;
+//    }
 
 //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping

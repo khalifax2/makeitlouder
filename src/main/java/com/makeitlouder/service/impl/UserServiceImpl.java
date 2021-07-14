@@ -82,16 +82,16 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.UserDtoToUserEntity(userDetails);
 
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-        user.setEmailVerificationToken(Utils.generateVerificationToken(user.getEmail()));
+//        user.setEmailVerificationToken(Utils.generateVerificationToken(user.getEmail()));
         user.getAddress().setUser(user);
 
         User createdUser = userRepository.save(user);
 
-//        createdUser.setVerified(true);
+        createdUser.setVerified(true);
 
         UserDto savedUser = userMapper.UserEntityToUserDto(createdUser);
 
-        amazonSES.verifyEmail(savedUser);
+//        amazonSES.verifyEmail(savedUser);
 
         return savedUser;
     }

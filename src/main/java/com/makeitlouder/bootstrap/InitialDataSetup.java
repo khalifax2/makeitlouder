@@ -62,6 +62,7 @@ public class InitialDataSetup {
             .lastName("Goku")
             .email("admin@example.com")
             .isVerified(true)
+            .admin(true)
             .encryptedPassword(bCryptPasswordEncoder.encode("123"))
             .roles(new HashSet<>(Arrays.asList(roleAdmin, roleSuperAdmin))).build();
 

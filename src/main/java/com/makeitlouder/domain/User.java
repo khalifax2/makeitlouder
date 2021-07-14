@@ -56,14 +56,17 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles;
 
+    private boolean admin;
+
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservation;
 
 
     @Builder
-    public User(Integer version, Timestamp createdDate, Timestamp lastModified, UUID id, String firstName,
-                String lastName, String email, String encryptedPassword, boolean isVerified,
-                String emailVerificationToken, Address address, Set<Role> roles) {
+    public User(Integer version, Timestamp createdDate, Timestamp lastModified, UUID id,
+                String firstName, String lastName, String email, String encryptedPassword,
+                boolean isVerified, String emailVerificationToken, Address address,
+                Set<Role> roles, boolean admin, List<Reservation> reservation) {
         super(version, createdDate, lastModified);
         this.id = id;
         this.firstName = firstName;
@@ -74,5 +77,7 @@ public class User extends BaseEntity {
         this.emailVerificationToken = emailVerificationToken;
         this.address = address;
         this.roles = roles;
+        this.admin = admin;
+        this.reservation = reservation;
     }
 }
